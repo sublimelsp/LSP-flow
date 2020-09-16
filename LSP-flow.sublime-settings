@@ -1,0 +1,14 @@
+{
+    // will be filled in by the plugin
+    "command": [],
+    "languages": [
+        {
+            "languageId": "javascriptreact",
+            "document_selector": "source.js.react"
+        },
+        {
+            "languageId": "javascript",
+            "document_selector": "source.js"
+        }
+    ]
+}

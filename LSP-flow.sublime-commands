@@ -1,0 +1,10 @@
+[
+    {
+        "caption": "Preferences: LSP-flow Settings",
+        "command": "edit_settings",
+        "args": {
+            "base_file": "${packages}/LSP-flow/LSP-flow.sublime-settings",
+            "default": "// Settings in here override those in \"LSP-flow/LSP-flow.sublime-settings\"\n{\n\t$0\n}\n"
+        }
+    }
+]
