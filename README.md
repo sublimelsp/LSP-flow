@@ -8,4 +8,6 @@ one of your folders in your window to contain:
 - a node_modules/.bin/flow file (or symbolic link)
 
 If there exists a folder where both of these conditions are met, only then is
-your flow language server started.
+your flow language server started in javascript and javascriptreact files.
+
+To obtain a modern javascript syntax with flow types, use [JSCustom](https://packagecontrol.io/packages/JSCustom).
