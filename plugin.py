@@ -10,7 +10,8 @@ from os.path import exists
 
 
 def _flow_bin_path(path: str) -> str:
-    return join(path, "node_modules", ".bin", "flow")
+    binfile = "flow.cmd" if sublime.platform() == "windows" else "flow"
+    return join(path, "node_modules", ".bin", binfile)
 
 
 def _flow_config_path(path: str) -> str:
