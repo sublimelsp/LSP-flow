@@ -39,7 +39,7 @@ class Flow(AbstractPlugin):
         folders: List[WorkspaceFolder],
         configuration: ClientConfig,
     ) -> Optional[str]:
-        path = _find_flow_root_path(initiating_view.file_name())
+        path = _find_flow_root_path(dirname(initiating_view.file_name()))
 
         if not path:
             return "no .flowconfig found in project or parent directories"
