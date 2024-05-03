@@ -10,5 +10,21 @@
             "languageId": "javascript",
             "document_selector": "source.js"
         }
-    ]
+    ],
+    "settings": {
+        // Type coverage diagnostic severity
+        // possible values: error, warn, info
+        "flow.coverageSeverity": "info",
+        // Set value to enable flow lazy mode
+        "flow.lazyMode": null,
+        // Log level for output panel logs
+        // possible values: error, warn, info, trace
+        "flow.logLevel": "info",
+        // If true will run flow on every edit, otherwise will run only when changes are saved
+        "flow.runOnEdit": true,
+        // If true will show uncovered code by default
+        "flow.showUncovered": false,
+        // Complete functions with their parameter signature.
+        "flow.useCodeSnippetOnFunctionSuggest": true,
+    }
 }

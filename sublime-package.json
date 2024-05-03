@@ -1,0 +1,94 @@
+{
+  "contributions": {
+    "settings": [
+      {
+        "file_patterns": [
+          "/LSP-flow.sublime-settings"
+        ],
+        "schema": {
+          "$id": "sublime://settings/LSP-flow",
+          "allOf": [
+            {
+              "$ref": "sublime://settings/LSP-plugin-base"
+            },
+            {
+              "$ref": "sublime://settings/LSP-flow#/definitions/PluginConfig"
+            }
+          ],
+          "definitions": {
+            "PluginConfig": {
+              "properties": {
+                "settings": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "flow.coverageSeverity": {
+                      "default": "info",
+                      "description": "Type coverage diagnostic severity",
+                      "enum": [
+                        "error",
+                        "warn",
+                        "info"
+                      ],
+                      "type": "string"
+                    },
+                    "flow.lazyMode": {
+                      "default": null,
+                      "description": "Set value to enable flow lazy mode",
+                      "type": "string"
+                    },
+                    "flow.logLevel": {
+                      "default": "info",
+                      "description": "Log level for output panel logs",
+                      "enum": [
+                        "error",
+                        "warn",
+                        "info",
+                        "trace"
+                      ],
+                      "type": "string"
+                    },
+                    "flow.runOnEdit": {
+                      "default": true,
+                      "description": "If true will run flow on every edit, otherwise will run only when changes are saved",
+                      "type": "boolean"
+                    },
+                    "flow.showUncovered": {
+                      "default": false,
+                      "description": "If true will show uncovered code by default",
+                      "type": "boolean"
+                    },
+                    "flow.useCodeSnippetOnFunctionSuggest": {
+                      "default": true,
+                      "description": "Complete functions with their parameter signature.",
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "file_patterns": [
+          "/*.sublime-project"
+        ],
+        "schema": {
+          "properties": {
+            "settings": {
+              "properties": {
+                "LSP": {
+                  "properties": {
+                    "LSP-flow": {
+                      "$ref": "sublime://settings/LSP-flow#/definitions/PluginConfig"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
