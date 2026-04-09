@@ -1,13 +1,14 @@
+from __future__ import annotations
+
 from LSP.plugin import AbstractPlugin
 from LSP.plugin import ClientConfig
 from LSP.plugin import register_plugin
 from LSP.plugin import unregister_plugin
 from LSP.plugin import WorkspaceFolder
-from LSP.plugin.core.typing import Optional, List
+from os.path import dirname
+from os.path import exists
+from os.path import join
 import sublime
-
-
-from os.path import dirname, exists, join
 
 
 def _flow_bin_path(path: str) -> str:
@@ -19,7 +20,7 @@ def _flow_config_path(path: str) -> str:
     return join(path, ".flowconfig")
 
 
-def _find_flow_root_path(directory: str) -> Optional[str]:
+def _find_flow_root_path(directory: str) -> str | None:
     if exists(_flow_config_path(directory)):
         return directory
     elif directory == dirname(directory):
@@ -46,9 +47,9 @@ class Flow(AbstractPlugin):
         cls,
         _: sublime.Window,
         initiating_view: sublime.View,
-        folders: List[WorkspaceFolder],
+        folders: list[WorkspaceFolder],
         configuration: ClientConfig,
-    ) -> Optional[str]:
+    ) -> str | None:
         path = _find_flow_root_path(dirname(initiating_view.file_name()))
 
         if not path:
