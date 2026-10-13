@@ -22,4 +22,12 @@ jobs:
       - name: Install flow-bin
         run: npm install --prefix tests/smoke --no-save --no-package-lock flow-bin
 
+      # On Linux and macOS, .bin/flow is a symlink to flow-bin's cli.js, which the smoke test's copy of the fixture
+      # turns into a file that can't find the rest of flow-bin. Put the native binary there instead. (On Windows,
+      # .bin/flow.cmd refers to cli.js by a relative path, which survives the copy.)
+      - name: Use the native flow binary
+        if: runner.os != 'Windows'
+        working-directory: tests/smoke/node_modules
+        run: mv "$(node -p 'require("flow-bin")')" .bin/flow
+
       - uses: sublimelsp/lsp_smoke_test@v1
