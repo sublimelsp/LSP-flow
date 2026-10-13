@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from LSP.plugin import AbstractPlugin
-from LSP.plugin import ClientConfig
-from LSP.plugin import register_plugin
-from LSP.plugin import unregister_plugin
+from LSP.plugin import LspPlugin
+from LSP.plugin import OnPreStartContext
+from LSP.plugin import PluginStartError
 from LSP.plugin import WorkspaceFolder
 from os.path import dirname
 from os.path import exists
@@ -30,37 +29,26 @@ def _find_flow_root_path(directory: str) -> str | None:
 
 
 def plugin_loaded() -> None:
-    register_plugin(Flow)
+    Flow.register()
 
 
 def plugin_unloaded() -> None:
-    unregister_plugin(Flow)
+    Flow.unregister()
 
 
-class Flow(AbstractPlugin):
+class Flow(LspPlugin):
     @classmethod
-    def name(cls) -> str:
-        return cls.__name__.lower()
-
-    @classmethod
-    def can_start(
-        cls,
-        _: sublime.Window,
-        initiating_view: sublime.View,
-        folders: list[WorkspaceFolder],
-        configuration: ClientConfig,
-    ) -> str | None:
-        file_path = initiating_view.file_name()
+    def on_pre_start_async(cls, context: OnPreStartContext) -> None:
+        file_path = context.view.file_name()
         path = _find_flow_root_path(dirname(file_path)) if file_path else None
 
         if not path:
-            return "no .flowconfig found in project or parent directories"
+            raise PluginStartError("no .flowconfig found in project or parent directories")
 
         binpath = _flow_bin_path(path)
         if not exists(binpath):
-            return "no flow binary found (tried: {})".format(binpath)
+            raise PluginStartError("no flow binary found (tried: {})".format(binpath))
 
-        folders.clear()
-        folders.append(WorkspaceFolder.from_path(path))
-        configuration.command = [binpath, "lsp"]
-        return None
+        context.workspace_folders.clear()
+        context.workspace_folders.append(WorkspaceFolder.from_path(path))
+        context.configuration.command = [binpath, "lsp"]
