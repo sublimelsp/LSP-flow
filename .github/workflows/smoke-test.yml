@@ -1,0 +1,25 @@
+name: Smoke test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    name: Smoke test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+
+      # The package runs the flow binary from node_modules next to .flowconfig.
+      - name: Install flow-bin
+        run: npm install --prefix tests/smoke --no-save --no-package-lock flow-bin
+
+      - uses: sublimelsp/lsp_smoke_test@v1
