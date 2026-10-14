@@ -23,11 +23,21 @@ jobs:
         run: npm install --prefix tests/smoke --no-save --no-package-lock flow-bin
 
       # On Linux and macOS, .bin/flow is a symlink to flow-bin's cli.js, which the smoke test's copy of the fixture
-      # turns into a file that can't find the rest of flow-bin. Put the native binary there instead. (On Windows,
-      # .bin/flow.cmd refers to cli.js by a relative path, which survives the copy.)
+      # turns into a file that can't find the rest of flow-bin. Put the native binary there instead.
       - name: Use the native flow binary
         if: runner.os != 'Windows'
         working-directory: tests/smoke/node_modules
         run: mv "$(node -p 'require("flow-bin")')" .bin/flow
+
+      # On Windows, .bin/flow.cmd runs cli.js with node, which runs flow.exe. Run flow.exe directly instead, so that
+      # the session ends within the smoke test's time limit.
+      - name: Use the native flow binary
+        if: runner.os == 'Windows'
+        working-directory: tests/smoke/node_modules
+        shell: bash
+        run: |
+          bin=$(node -p 'require("path").relative(".bin", require("flow-bin"))')
+          printf '@"%%~dp0%s" %%*\r\n' "$bin" > .bin/flow.cmd
+          cat .bin/flow.cmd
 
       - uses: sublimelsp/lsp_smoke_test@v1
