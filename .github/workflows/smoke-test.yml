@@ -30,5 +30,4 @@ jobs:
         working-directory: tests/smoke/node_modules
         run: mv "$(node -p 'require("flow-bin")')" .bin/flow
 
-      # TEMPORARY: test sublimelsp/lsp_smoke_test#6 before it is released as v1.
-      - uses: sublimelsp/lsp_smoke_test@fix/session-end-timeout
+      - uses: sublimelsp/lsp_smoke_test@v1
